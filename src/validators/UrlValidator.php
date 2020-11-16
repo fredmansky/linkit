@@ -57,7 +57,11 @@ class UrlValidator extends YiiUrlValidator
 
         if ($this->allowMailto && substr($value, 0, 7) === 'mailto:') {
             $emailValidator = new EmailValidator;
-            if($emailValidator->validateValue(str_replace('mailto:', '', $value)))
+
+            $emailValidated = substr($value, 0, strpos($value, "?subject="));
+            $emailValidated = str_replace('mailto:', '', $emailValidated);
+
+            if ($emailValidator->validateValue($emailValidated))
             {
                 return [Craft::t('linkit', 'Please enter a valid email address'), []];
             }
